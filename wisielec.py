@@ -6,7 +6,7 @@ from random import randint
 class HangmanGame:
     def __init__(self, root):
         self.root = root
-        self.lives = 6
+        self.lives = 7
         self.gameOver = False
 
         self.wordListArtists = [
@@ -92,7 +92,7 @@ class HangmanGame:
         # print("Wybrano:", self.selectedWord)
 
         self.guessedLetters = []
-        self.lives = 6
+        self.lives = 7
         self.gameOver = False
 
         self.hiddenWord = self.hideTheWord(self.selectedWord)
@@ -171,7 +171,7 @@ class HangmanGame:
             widget.destroy()
 
     def restartGame(self):
-        self.lives = 6
+        self.lives = 7
         self.gameOver = False
         self.selectedWord = ""
         self.guessedLetters = []
@@ -217,10 +217,20 @@ class HangmanGame:
 
         self.livesLabel = ttk.Label(
             self.gameFrame,
-            text="❤️ Lives: 6",
+            text="❤️ Lives: 7",
             font=("Consolas", 18)
         )
         self.livesLabel.pack(pady=10)
+
+        self.canvas = Canvas(self.gameFrame, width=400, height=200, bg="darkgray")
+        self.canvas.pack(pady = 20)
+
+        self.canvas.create_line([[50, 50], [50, 150]], width=2, fill="black") ## Base line
+        self.canvas.create_line([[50, 50], [150, 50]], width=2, fill="black") ## Front line
+        self.canvas.create_line([[50, 70], [80, 50]], width=2, fill="black") ## The thingy at the top idk
+        self.canvas.create_line([[50, 150], [80, 180]], width=2, fill="black") ## Support right
+        self.canvas.create_line([[50, 150], [20, 180]], width=2, fill="black") ## Support left
+        self.canvas.create_line([[150, 50], [150, 80]], width=2, fill="black") ## Rope I guess
 
     def guessLetter(self):
         if self.gameOver:
@@ -268,6 +278,20 @@ class HangmanGame:
         if "_" not in self.hiddenWord:
             self.gameOver = True
             self.showWinScreen()
+
+        match self.lives:
+            case 6:
+                self.canvas.create_oval([[130, 60], [170, 100]], width=1, fill="black")
+            case 5:
+                self.canvas.create_line([[150, 100], [150, 140]], width=2, fill="black")
+            case 4:
+                self.canvas.create_line([[150, 100], [170, 120]], width=2, fill="black")
+            case 3:
+                self.canvas.create_line([[150, 100], [130, 120]], width=2, fill="black")
+            case 2:
+                self.canvas.create_line([[150, 139], [170, 170]], width=2, fill="black")
+            case 1:
+                self.canvas.create_line([[150, 139], [130, 170]], width=2, fill="black")
 
 ## GAME START
 root = Tk()
